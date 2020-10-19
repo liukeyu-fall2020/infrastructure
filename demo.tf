@@ -13,7 +13,7 @@ variable "az3" {
 
 
 provider "aws" {
-    profile = "dev"
+    profile = "ghactions"
     region = var.region
 }
 
@@ -34,7 +34,7 @@ resource "aws_subnet" "subnet-1" {
 }
 
 resource "aws_subnet" "subnet-2" {
-    cidr_block              = "10.0.1.0/24"
+    cidr_block              = "10.0.2.0/24"
     vpc_id                  = aws_vpc.vpc-1.id
     availability_zone       = var.az2
     map_public_ip_on_launch = true
@@ -44,7 +44,7 @@ resource "aws_subnet" "subnet-2" {
 }
 
 resource "aws_subnet" "subnet-3" {
-    cidr_block              = "10.0.1.0/24"
+    cidr_block              = "10.0.3.0/24"
     vpc_id                  = aws_vpc.vpc-1.id
     availability_zone       = var.az3
     map_public_ip_on_launch = true
