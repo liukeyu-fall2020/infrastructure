@@ -13,7 +13,7 @@ variable "az3" {
 
 
 provider "aws" {
-    profile = "ghactions"
+    profile = "dev1"
     region = var.region
 }
 
