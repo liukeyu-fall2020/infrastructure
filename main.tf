@@ -311,8 +311,8 @@ resource "aws_iam_policy" "CodeDeploy-EC2-S3" {
 EOF
 } 
 
-resource "aws_iam_user_policy" "CodeDeploy-EC2-S3" {
-  name = "CodeDeploy-EC2-S3"
+resource "aws_iam_user_policy" "CloudWatchAgentAdmin" {
+  name = "CloudWatchAgentAdmin"
   user = var.aws_user
   policy = <<EOF
 {
@@ -321,13 +321,56 @@ resource "aws_iam_user_policy" "CodeDeploy-EC2-S3" {
         {
             "Effect": "Allow",
             "Action": [
-                "s3:PutObject",
-                "s3:Get*",
-                "s3:List*"
+                "cloudwatch:PutMetricData",
+                "ec2:DescribeTags",
+                "logs:PutLogEvents",
+                "logs:DescribeLogStreams",
+                "logs:DescribeLogGroups",
+                "logs:CreateLogStream",
+                "logs:CreateLogGroup"
             ],
-            "Resource": [            
-                 "*"
-            ]
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ssm:GetParameter",
+                "ssm:PutParameter"
+            ],
+            "Resource": "arn:aws:ssm:*:*:parameter/AmazonCloudWatch-*"
+        }
+    ]
+}
+EOF
+}
+
+resource "aws_iam_user_policy" "CloudWatchAgentService" {
+  name = "CloudWatchAgentService"
+  user = var.aws_user
+  policy = <<EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "cloudwatch:PutMetricData",
+                "ec2:DescribeVolumes",
+                "ec2:DescribeTags",
+                "logs:PutLogEvents",
+                "logs:DescribeLogStreams",
+                "logs:DescribeLogGroups",
+                "logs:CreateLogStream",
+                "logs:CreateLogGroup"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ssm:GetParameter"
+            ],
+            "Resource": "arn:aws:ssm:*:*:parameter/AmazonCloudWatch-*"
         }
     ]
 }
@@ -430,6 +473,26 @@ resource "aws_iam_role_policy" "AWSCodeDeployRole" {
             ],
             "Resource": "*"
         }
+    ]
+  }
+  EOF
+}
+
+resource "aws_iam_role" "CodeDeployServiceRole" {
+  name = "CodeDeployServiceRole"
+
+  assume_role_policy = <<-EOF
+  {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Action": "sts:AssumeRole",
+        "Principal": {
+          "Service": "ec2.amazonaws.com"
+        },
+        "Effect": "Allow",
+        "Sid": ""
+      }
     ]
   }
   EOF
