@@ -20,7 +20,7 @@ variable "dbname" {
   default = "db_cloud"
 }
 variable "amiID"{
-    default = "ami-04007132dedc1b6ac"
+    default = "ami-0070eeef914cf8bc2"
 }
 variable "aws_user" {
   default = "ghaction"
