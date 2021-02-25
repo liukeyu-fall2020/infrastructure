@@ -1,5 +1,5 @@
 # infrastructure
-##instructions for setting up your infrastructure using Terraform.
+## instructions for setting up your infrastructure using Terraform.
 ```
 Terraform plan
 ```
